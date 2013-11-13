@@ -4,6 +4,10 @@ module Media
   module Persistence
     module Models
       Base = Class.new(Sequel::Model) do
+        self.raise_on_save_failure     = false
+        self.raise_on_typecast_failure = false
+        self.strict_param_setting      = false
+
         plugin :auto_validations, not_null: :presence
         plugin :optimistic_locking
         plugin :prepared_statements
