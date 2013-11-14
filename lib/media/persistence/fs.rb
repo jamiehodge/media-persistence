@@ -70,7 +70,7 @@ module Media
         end
 
         def path
-          context.path + id
+          context.path + id.to_s
         end
       end
     end
