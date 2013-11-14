@@ -23,6 +23,11 @@ module Media
             @file ||= storage[file_id]
           end
 
+          def file=(v)
+            modified!
+            @file = v
+          end
+
           def file_id
             [id, extension].join
           end
