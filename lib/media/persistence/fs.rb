@@ -15,7 +15,7 @@ module Media
       end
 
       def [](id)
-        Directory.make(self, id)
+        Directory.create(self, id)
       end
 
       def make
