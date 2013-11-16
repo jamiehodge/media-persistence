@@ -24,7 +24,8 @@ namespace :db do
 
   desc "seed"
   task seed: :environment do
-    require File.expand_path("db/seed")
+    seed = File.expand_path("db/seed")
+    require seed if File.exist?(seed)
   end
 
   desc "setup"
