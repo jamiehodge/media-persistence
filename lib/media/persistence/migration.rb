@@ -27,6 +27,14 @@ class Sequel::Database
       language: :plpgsql, returns: :trigger, replace: true
   end
 
+  def create_notification_trigger(table_name)
+    create_trigger table_name, :notify, :notify, each_row: true
+  end
+
+  def drop_notification_trigger(table_name)
+    drop_trigger table_name, :notify
+  end
+
   def create_timestamp_trigger(table_name)
     create_trigger table_name, :timestamp, :moddatetime,
       args: :updated_at, each_row: true, events: :update
