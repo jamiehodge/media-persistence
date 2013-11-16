@@ -23,8 +23,17 @@ end
 class Sequel::Database
 
   def create_notification_function
-    create_function :notify, %Q(notification_function),
-      language: :plpgsql, returns: :trigger, replace: true
+    create_function :notify, <<SQL, language: :plpgsql, returns: :trigger, replace: true
+      BEGIN
+        IF (TG_OP = 'DELETE') THEN
+          PERFORM pg_notify(TG_TABLE_NAME, '{ \"id\": \"' || OLD.id || '\", \"event\": \"' || lower(TG_OP) || '\" }');
+          RETURN OLD;
+        ELSE
+          PERFORM pg_notify(TG_TABLE_NAME, '{ \"id\": \"' || NEW.id || '\", \"event\": \"' || lower(TG_OP) || '\" }');
+          RETURN NEW;
+        END IF;
+      END;
+SQL
   end
 
   def create_notification_trigger(table_name)
@@ -42,9 +51,5 @@ class Sequel::Database
 
   def drop_timestamp_trigger(table_name)
     drop_trigger table_name, :timestamp
-  end
-
-  def notification_function
-    File.read(File.expand_path("../sql/notification.sql", __FILE__))
   end
 end
