@@ -23,7 +23,7 @@ end
 class Sequel::Database
 
   def create_notification_function
-    create_function :notify, notification_function,
+    create_function :notify, %Q(notification_function),
       language: :plpgsql, returns: :trigger, replace: true
   end
 
