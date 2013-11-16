@@ -22,6 +22,11 @@ end
 
 class Sequel::Database
 
+  def create_notification_function
+    create_function :notify, notification_function,
+      language: :plpgsql, returns: :trigger, replace: true
+  end
+
   def create_timestamp_trigger(table_name)
     create_trigger table_name, :timestamp, :moddatetime,
       args: :updated_at, each_row: true, events: :update
@@ -29,5 +34,9 @@ class Sequel::Database
 
   def drop_timestamp_trigger(table_name)
     drop_trigger table_name, :timestamp
+  end
+
+  def notification_function
+    File.read(File.expand_path("../sql/notification.sql", __FILE__))
   end
 end
