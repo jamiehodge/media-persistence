@@ -10,5 +10,10 @@ module Media
       db.loggers << Logger if ENV["DEBUG"]
       db.stream_all_queries = true
     end
+
+    Sequel::Postgres::PGArray.register "citext",
+      oid: DB[:pg_type].where(typname: "_citext").get(:oid)
+
+    DB.reset_conversion_procs
   end
 end
