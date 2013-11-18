@@ -3,7 +3,7 @@ require "sequel"
 
 module Media
   module Persistence
-    Sequel.extension :pg_array_ops
+    Sequel.extension :blank, :pg_array_ops
 
     DB = Sequel.connect(ENV["DATABASE_URL"]).tap do |db|
       db.extension :null_dataset, :pg_array, :pg_streaming
