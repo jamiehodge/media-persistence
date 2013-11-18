@@ -21,7 +21,7 @@ module Media
         plugin :string_stripper
 
         def validates_uuid(columns)
-          validates_format UUID, columns
+          validates_format UUID, columns.select {|c| send(c) }
         end
       end
     end
