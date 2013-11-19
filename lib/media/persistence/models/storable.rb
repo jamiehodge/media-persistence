@@ -20,7 +20,7 @@ module Media
           extend Forwardable
 
           def file
-            @file ||= storage[file_id]
+            @file ||= (storage[file_id] unless new?)
           end
 
           def file=(v)
@@ -47,6 +47,11 @@ module Media
             super
             return if File.identical?(storage[file_id], file)
             storage[file_id] = file
+          end
+
+          def validate
+            super
+            validates_presence :file
           end
 
           private
