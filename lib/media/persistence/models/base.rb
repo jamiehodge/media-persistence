@@ -1,5 +1,6 @@
 require "sequel"
 require_relative "storable"
+require_relative "transitionable"
 
 module Media
   module Persistence
@@ -9,6 +10,7 @@ module Media
 
       Base = Class.new(Sequel::Model) do
         extend Storable
+        extend Transitionable
 
         self.raise_on_save_failure     = false
         self.raise_on_typecast_failure = false
